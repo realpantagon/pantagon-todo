@@ -8,6 +8,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+      // Inject custom push handler into the generated SW
+      injectManifest: undefined,
+      strategies: 'generateSW',
       manifest: {
         name: 'My To-Do',
         short_name: 'MyToDo',
@@ -25,6 +28,8 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        // Inject our push handler into the generated service worker
+        importScripts: ['/sw-push.js'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/bduvbthlqywpqhtaiznj\.supabase\.co\/.*/i,

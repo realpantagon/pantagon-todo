@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { fetchTodos, fetchCategories, createTodo, updateTodo, deleteTodo, toggleTodo } from './lib/todos'
-import { requestPermission, checkAndNotify } from './lib/notifications'
+import { enableNotifications, checkAndNotify } from './lib/notifications'
 import Header from './components/Header'
 import TodoList from './components/TodoList'
 import AddTodoSheet from './components/AddTodoSheet'
@@ -73,10 +73,10 @@ export default function App() {
   }, [notifEnabled])
 
   const handleEnableNotif = useCallback(async () => {
-    const granted = await requestPermission()
-    setNotifEnabled(granted)
-    if (!granted) showToast('ไม่ได้รับอนุญาตแจ้งเตือน', 'error')
-    else showToast('เปิดการแจ้งเตือนแล้ว')
+    const ok = await enableNotifications()
+    setNotifEnabled(ok)
+    if (!ok) showToast('ไม่ได้รับอนุญาตแจ้งเตือน', 'error')
+    else showToast('เปิดการแจ้งเตือนแล้ว — บันทึก device แล้ว')
   }, [showToast])
 
   const handleToggle = useCallback(async (id, completed) => {
