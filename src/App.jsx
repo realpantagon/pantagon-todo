@@ -38,7 +38,6 @@ export default function App() {
   }, [settings.theme])
   
   const todosRef = useRef([])
-  const intervalRef = useRef(null)
 
   const showToast = useCallback((msg, type = 'success') => {
     setToast({ msg, type })
@@ -61,33 +60,6 @@ export default function App() {
   useEffect(() => { load() }, [load])
   useEffect(() => { todosRef.current = todos }, [todos])
 
-  // Fire once after todos load or settings change
-  useEffect(() => {
-    if (!settings.notificationsEnabled || loading || todos.length === 0) return
-    checkAndNotify(todosRef.current, settings)
-  }, [loading, settings.notificationsEnabled, settings.dueSoonMinutes, settings.quietHoursEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Interval check - run every 1 minute to check time-sensitive boundaries (due soon, overdue, summaries)
-  useEffect(() => {
-    clearInterval(intervalRef.current)
-    if (!settings.notificationsEnabled) return
-
-    intervalRef.current = setInterval(() => {
-      checkAndNotify(todosRef.current, settings)
-    }, 60000)
-
-    return () => clearInterval(intervalRef.current)
-  }, [settings.notificationsEnabled, settings.dueSoonMinutes, settings.quietHoursEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Re-notify on app focus
-  useEffect(() => {
-    if (!settings.notificationsEnabled) return
-    const onVisible = () => {
-      if (document.visibilityState === 'visible') checkAndNotify(todosRef.current, settings)
-    }
-    document.addEventListener('visibilitychange', onVisible)
-    return () => document.removeEventListener('visibilitychange', onVisible)
-  }, [settings.notificationsEnabled, settings.dueSoonMinutes, settings.quietHoursEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleToggle = useCallback(async (id, completed) => {
     setTodos(prev => prev.map(t => t.id === id

@@ -1,11 +1,6 @@
 export const DEFAULT_SETTINGS = {
   notificationsEnabled: false,
-  notifStrategy: 'summary',
-  notifScope: 'today_overdue',
-  notifInterval: 60,
   soundEnabled: true,
-  dueSoonMinutes: 30,
-  quietHoursEnabled: true,
   theme: 'dark',
 }
 

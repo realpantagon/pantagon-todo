@@ -71,12 +71,12 @@ export default function SettingsView({ onSettingsChange, showToast, triggerTestN
         <div className={styles.container}>
           <div className={styles.section}>
             <h3 className={styles.sectionHeader}>🔔 Notifications</h3>
-            
+
             <div className={styles.card}>
               <div className={styles.row}>
                 <div className={styles.info}>
                   <span className={styles.label}>Enable System Notifications</span>
-                  <span className={styles.sublabel}>Allows Pantagon Tasks to send alerts</span>
+                  <span className={styles.sublabel}>Daily reminder at 10:00 AM</span>
                 </div>
                 <button
                   type="button"
@@ -90,84 +90,6 @@ export default function SettingsView({ onSettingsChange, showToast, triggerTestN
 
               {settings.notificationsEnabled && (
                 <div className={styles.settingsSubgroup}>
-                  <div className={styles.field}>
-                    <label className={styles.selectLabel}>Delivery Mode</label>
-                    <select
-                      className={styles.select}
-                      value={settings.notifStrategy}
-                      onChange={e => handleSelectChange('notifStrategy', e.target.value)}
-                    >
-                      <option value="summary">📝 Grouped Summary (Recommended)</option>
-                      <option value="individual">🚨 Individual Alerts</option>
-                    </select>
-                    <span className={styles.help}>
-                      {settings.notifStrategy === 'summary' 
-                        ? 'Consolidates multiple tasks into a single summary notification.' 
-                        : 'Sends a separate system notification for each matching task.'}
-                    </span>
-                  </div>
-
-                  <div className={styles.field}>
-                    <label className={styles.selectLabel}>Include Tasks</label>
-                    <select
-                      className={styles.select}
-                      value={settings.notifScope}
-                      onChange={e => handleSelectChange('notifScope', e.target.value)}
-                    >
-                      <option value="overdue">⚠️ Overdue tasks only</option>
-                      <option value="today_overdue">📋 Due today or overdue</option>
-                      <option value="all">📅 All pending tasks</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.field}>
-                    <label className={styles.selectLabel}>Check Frequency</label>
-                    <select
-                      className={styles.select}
-                      value={settings.notifInterval}
-                      onChange={e => handleSelectChange('notifInterval', Number(e.target.value))}
-                    >
-                      <option value={15}>⏱️ Every 15 minutes</option>
-                      <option value={60}>⏱️ Every 1 hour</option>
-                      <option value={120}>⏱️ Every 2 hours</option>
-                      <option value={180}>⏱️ Every 3 hours</option>
-                      <option value={240}>⏱️ Every 4 hours</option>
-                      <option value={300}>⏱️ Every 5 hours</option>
-                      <option value={360}>⏱️ Every 6 hours</option>
-                      <option value={720}>⏱️ Every 12 hours</option>
-                      <option value={0}>⏹️ Manual (Only when app opens)</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.field}>
-                    <label className={styles.selectLabel}>Due Soon Alerts</label>
-                    <select
-                      className={styles.select}
-                      value={settings.dueSoonMinutes}
-                      onChange={e => handleSelectChange('dueSoonMinutes', Number(e.target.value))}
-                    >
-                      <option value={15}>⏱️ 15 minutes before due</option>
-                      <option value={30}>⏱️ 30 minutes before due</option>
-                      <option value={60}>⏱️ 1 hour before due</option>
-                      <option value={0}>⏹️ Off</option>
-                    </select>
-                  </div>
-
-                  <div className={styles.rowField}>
-                    <div className={styles.info}>
-                      <span className={styles.labelSmall}>Quiet Hours Protection</span>
-                      <span className={styles.sublabel}>Silence repeating overdue alerts (10 PM - 8 AM)</span>
-                    </div>
-                    <button
-                      type="button"
-                      className={`${styles.toggle} ${settings.quietHoursEnabled ? styles.toggleOn : ''}`}
-                      onClick={() => handleSelectChange('quietHoursEnabled', !settings.quietHoursEnabled)}
-                      aria-label="Toggle quiet hours protection"
-                    >
-                      <span className={styles.toggleKnob} />
-                    </button>
-                  </div>
-
                   <button
                     type="button"
                     className={styles.testBtn}
