@@ -7,7 +7,6 @@ import AddTodoSheet from './components/AddTodoSheet'
 import FilterBar from './components/FilterBar'
 import StatsBar from './components/StatsBar'
 import Toast from './components/Toast'
-import BottomNav from './components/BottomNav'
 import SettingsView from './components/SettingsView'
 import { DEFAULT_SETTINGS, playCompletionSound } from './lib/settings'
 import CalendarView from './components/CalendarView'
@@ -22,7 +21,8 @@ export default function App() {
   const [showAdd, setShowAdd] = useState(false)
   const [editTodo, setEditTodo] = useState(null)
   const [toast, setToast] = useState(null)
-  const [activeTab, setActiveTab] = useState('tasks')
+  const [viewMode, setViewMode] = useState('tasks')
+  const [showSettings, setShowSettings] = useState(false)
   
   const [settings, setSettings] = useState(() => {
     try {
@@ -135,10 +135,17 @@ export default function App() {
 
   return (
     <div className="app">
-      {activeTab === 'tasks' && (
+      <Header onOpenSettings={() => setShowSettings(true)} />
+      <StatsBar 
+        todos={todos} 
+        todayCount={todayCount} 
+        overdueCount={overdueCount} 
+        activeView={viewMode}
+        onViewToggle={() => setViewMode(prev => prev === 'tasks' ? 'calendar' : 'tasks')}
+      />
+
+      {viewMode === 'tasks' ? (
         <>
-          <Header />
-          <StatsBar todos={todos} todayCount={todayCount} overdueCount={overdueCount} />
           <FilterBar
             filter={filter} setFilter={setFilter}
             categories={categories}
@@ -153,9 +160,7 @@ export default function App() {
             onEdit={t => { setEditTodo(t); setShowAdd(true) }}
           />
         </>
-      )}
-
-      {activeTab === 'calendar' && (
+      ) : (
         <CalendarView
           todos={todos}
           loading={loading}
@@ -169,23 +174,11 @@ export default function App() {
         />
       )}
 
-      {activeTab === 'settings' && (
-        <SettingsView
-          onSettingsChange={setSettings}
-          showToast={showToast}
-          triggerTestNotification={() => {
-            checkAndNotify(todosRef.current, { ...settings, notificationsEnabled: true })
-          }}
-        />
-      )}
-
-      {activeTab !== 'settings' && (
-        <button className="fab" onClick={() => { setEditTodo(null); setShowAdd(true) }} aria-label="Add task">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-        </button>
-      )}
+      <button className="fab" onClick={() => { setEditTodo(null); setShowAdd(true) }} aria-label="Add task">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+      </button>
 
       {showAdd && (
         <AddTodoSheet
@@ -197,7 +190,16 @@ export default function App() {
         />
       )}
 
-      <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
+      {showSettings && (
+        <SettingsView
+          onSettingsChange={setSettings}
+          showToast={showToast}
+          triggerTestNotification={() => {
+            checkAndNotify(todosRef.current, { ...settings, notificationsEnabled: true })
+          }}
+          onClose={() => setShowSettings(false)}
+        />
+      )}
 
       {toast && <Toast msg={toast.msg} type={toast.type} />}
     </div>

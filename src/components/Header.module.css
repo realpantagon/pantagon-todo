@@ -55,3 +55,27 @@
   border-color: rgba(123,108,246,0.35);
   color: var(--accent2);
 }
+
+.gearBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text2);
+  transition: all 0.15s;
+}
+
+.gearBtn:hover {
+  color: var(--text);
+  background: var(--surface3);
+  border-color: var(--border2);
+}
+
+.gearBtn:active {
+  transform: scale(0.92);
+}
+
