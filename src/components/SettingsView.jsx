@@ -127,7 +127,6 @@ export default function SettingsView({ onSettingsChange, showToast, triggerTestN
                       value={settings.notifInterval}
                       onChange={e => handleSelectChange('notifInterval', Number(e.target.value))}
                     >
-                      <option value={3}>⏱️ Every 3 minutes (Testing)</option>
                       <option value={15}>⏱️ Every 15 minutes</option>
                       <option value={60}>⏱️ Every 1 hour</option>
                       <option value={120}>⏱️ Every 2 hours</option>
