@@ -33,6 +33,10 @@ export default function App() {
     }
   })
   
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', settings.theme || 'dark')
+  }, [settings.theme])
+  
   const todosRef = useRef([])
   const intervalRef = useRef(null)
 

@@ -6,6 +6,7 @@ export const DEFAULT_SETTINGS = {
   soundEnabled: true,
   dueSoonMinutes: 30,
   quietHoursEnabled: true,
+  theme: 'dark',
 }
 
 // Custom synthesizer ding sound using Web Audio API

@@ -193,6 +193,18 @@ export default function SettingsView({ onSettingsChange, showToast, triggerTestN
                   <span className={styles.toggleKnob} />
                 </button>
               </div>
+
+              <div className={styles.field} style={{ borderTop: '1px dashed var(--border)', paddingTop: '14px', marginTop: '4px' }}>
+                <label className={styles.selectLabel}>App Theme</label>
+                <select
+                  className={styles.select}
+                  value={settings.theme}
+                  onChange={e => handleSelectChange('theme', e.target.value)}
+                >
+                  <option value="dark">🌑 Sleek Dark</option>
+                  <option value="light">☀️ Pristine Light</option>
+                </select>
+              </div>
             </div>
           </div>
 
