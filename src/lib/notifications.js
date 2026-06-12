@@ -87,8 +87,8 @@ export function checkAndNotify(todos, settings = {}, isTest = false) {
 
   if (isTest) {
     showLocalNotification(
-      '⚡ Test Notification',
-      'Notifications are working properly!',
+      'Test',
+      'Notifications active',
       'test-notification'
     )
     return
@@ -153,8 +153,8 @@ export function checkAndNotify(todos, settings = {}, isTest = false) {
   if (immediateOverdueTasks.length > 0) {
     immediateOverdueTasks.forEach(todo => {
       showLocalNotification(
-        `🚨 Overdue: ${todo.title}`,
-        `Was due at ${todo.due_time.slice(0, 5)}`,
+        `Overdue: ${todo.title}`,
+        `Due: ${todo.due_time.slice(0, 5)}`,
         `overdue-immediate-${todo.id}`
       )
       notifiedImmediateOverdue.push(todo.id)
@@ -180,8 +180,8 @@ export function checkAndNotify(todos, settings = {}, isTest = false) {
     if (dueSoonTasks.length > 0) {
       dueSoonTasks.forEach(todo => {
         showLocalNotification(
-          `⏱️ Due Soon: ${todo.title}`,
-          `Due at ${todo.due_time.slice(0, 5)}`,
+          `Due Soon: ${todo.title}`,
+          `Due: ${todo.due_time.slice(0, 5)}`,
           `due-soon-${todo.id}`
         )
         notifiedDueSoon.push(todo.id)
@@ -196,11 +196,11 @@ export function checkAndNotify(todos, settings = {}, isTest = false) {
     const pendingTodayCount = dueToday.length
     const overdueCount = overdue.length
     if (pendingTodayCount > 0 || overdueCount > 0) {
-      const title = `🌅 Today: ${pendingTodayCount + overdueCount} tasks`
-      const body = [...overdue, ...dueToday].slice(0, 4).map(t => `• ${t.title} (${t.due_time.slice(0, 5)})`).join('\n')
+      const title = `Today: ${pendingTodayCount + overdueCount} tasks`
+      const body = [...overdue, ...dueToday].slice(0, 4).map(t => `${t.title} (${t.due_time.slice(0, 5)})`).join('\n')
       showLocalNotification(title, body, 'summary-morning')
     } else {
-      showLocalNotification(`🌅 Today`, `All tasks completed!`, 'summary-morning')
+      showLocalNotification(`Today`, `All completed`, 'summary-morning')
     }
     localStorage.setItem('pantagon_last_morning_date', todayStr)
   }
@@ -209,11 +209,11 @@ export function checkAndNotify(todos, settings = {}, isTest = false) {
   if (hour === 18 && lastEveningDate !== todayStr) {
     const remainingCount = dueToday.length + overdue.length
     if (remainingCount > 0) {
-      const title = `🌆 Remaining: ${remainingCount} tasks`
-      const body = [...overdue, ...dueToday].slice(0, 4).map(t => `• ${t.title} (${t.due_time.slice(0, 5)})`).join('\n')
+      const title = `Remaining: ${remainingCount} tasks`
+      const body = [...overdue, ...dueToday].slice(0, 4).map(t => `${t.title} (${t.due_time.slice(0, 5)})`).join('\n')
       showLocalNotification(title, body, 'summary-evening')
     } else {
-      showLocalNotification(`🌆 Remaining`, `All tasks completed!`, 'summary-evening')
+      showLocalNotification(`Remaining`, `All completed`, 'summary-evening')
     }
     localStorage.setItem('pantagon_last_evening_date', todayStr)
   }
@@ -224,8 +224,8 @@ export function checkAndNotify(todos, settings = {}, isTest = false) {
     const timeSinceLast = now.getTime() - lastOverdueReminderTime
     if (timeSinceLast >= twoHoursMs) {
       showLocalNotification(
-        `🚨 Overdue: ${overdue.length} tasks`,
-        overdue.slice(0, 4).map(t => `• ${t.title} (${t.due_time.slice(0, 5)})`).join('\n'),
+        `Overdue: ${overdue.length} tasks`,
+        overdue.slice(0, 4).map(t => `${t.title} (${t.due_time.slice(0, 5)})`).join('\n'),
         'overdue-repeating'
       )
       localStorage.setItem('pantagon_last_overdue_time', now.getTime().toString())
