@@ -90,13 +90,13 @@ export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClo
           </div>
 
           <div className={styles.dateTimeGroup}>
-            <div className={styles.section} style={{ flex: 1 }}>
+            <div className={styles.section}>
               <label className={styles.label}>Due date</label>
               <input type="date" className={styles.dateInput}
                 value={dueDate} onChange={e => setDueDate(e.target.value)}
               />
             </div>
-            <div className={styles.section} style={{ flex: 1 }}>
+            <div className={styles.section}>
               <label className={styles.label}>Due time</label>
               <input type="time" className={styles.timeInput}
                 value={dueTime} onChange={e => setDueTime(e.target.value)}
