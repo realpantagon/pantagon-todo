@@ -1,0 +1,196 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+.sheet {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  background: var(--surface);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  padding: 0 0 env(safe-area-inset-bottom, 0);
+  animation: slideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  max-height: 92dvh;
+  overflow-y: auto;
+}
+
+.handle {
+  width: 36px;
+  height: 4px;
+  background: var(--border2);
+  border-radius: 4px;
+  margin: 12px auto 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 4px;
+}
+
+.sheetTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text2);
+}
+
+.form {
+  padding: 12px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field { display: flex; flex-direction: column; }
+
+.titleInput {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.titleInput:focus { border-color: var(--accent); }
+.titleInput::placeholder { color: var(--text3); }
+
+.noteInput {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  resize: none;
+  transition: border-color 0.15s;
+  line-height: 1.5;
+}
+.noteInput:focus { border-color: rgba(232,201,122,0.4); }
+.noteInput::placeholder { color: var(--text3); }
+
+.row { display: flex; gap: 12px; }
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text3);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  transition: all 0.12s;
+}
+.pill.pillActive {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-color: rgba(232,201,122,0.35);
+}
+
+.dateInput {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  color-scheme: dark;
+  width: 100%;
+  transition: border-color 0.15s;
+}
+.dateInput:focus { border-color: rgba(232,201,122,0.4); }
+
+.catPills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.catPill {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: var(--text3);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  transition: all 0.12s;
+}
+.catPill.catPillActive {
+  background: color-mix(in srgb, var(--cc, var(--accent)) 15%, transparent);
+  color: var(--cc, var(--accent));
+  border-color: color-mix(in srgb, var(--cc, var(--accent)) 40%, transparent);
+}
+
+.submitBtn {
+  margin-top: 4px;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #0c0c0e;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s, transform 0.1s;
+  min-height: 52px;
+}
+.submitBtn:disabled { opacity: 0.5; }
+.submitBtn:not(:disabled):active { transform: scale(0.97); }
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-top-color: #0c0c0e;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
