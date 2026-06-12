@@ -76,12 +76,16 @@ export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClo
           <div className={styles.section}>
             <label className={styles.label}>Priority</label>
             <div className={styles.pills}>
-              {PRIORITIES.map(p => (
-                <button key={p.id} type="button"
-                  className={`${styles.pill} ${priority === p.id ? styles.pillActive : ''}`}
-                  onClick={() => setPriority(p.id)}
-                >{p.label}</button>
-              ))}
+              {PRIORITIES.map(p => {
+                const isActive = priority === p.id
+                const activeClass = p.id === 'high' ? styles.pillHighActive : p.id === 'medium' ? styles.pillMediumActive : styles.pillLowActive
+                return (
+                  <button key={p.id} type="button"
+                    className={`${styles.pill} ${isActive ? `${styles.pillActive} ${activeClass}` : ''}`}
+                    onClick={() => setPriority(p.id)}
+                  >{p.label}</button>
+                )
+              })}
             </div>
           </div>
 

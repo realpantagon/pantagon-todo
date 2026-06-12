@@ -1,89 +1,147 @@
 .overlay {
   position: fixed; inset: 0;
-  background: rgba(0,0,0,0.75);
+  background: rgba(4, 4, 8, 0.7);
   z-index: 50;
   display: flex; align-items: flex-end;
-  animation: fadeIn 0.2s ease;
-  backdrop-filter: blur(6px);
+  animation: fadeIn 0.22s ease-out;
+  backdrop-filter: blur(12px);
 }
 
 .sheet {
   width: 100%; max-width: 480px; margin: 0 auto;
-  background: var(--surface);
-  border-top-left-radius: 24px; border-top-right-radius: 24px;
-  border: 1px solid var(--border); border-bottom: none;
+  background: linear-gradient(180deg, rgba(22, 22, 38, 0.94) 0%, rgba(13, 13, 23, 0.98) 100%);
+  border-top-left-radius: 28px; border-top-right-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08); border-bottom: none;
   padding-bottom: env(safe-area-inset-bottom, 0);
-  animation: slideUp 0.35s cubic-bezier(0.32,0.72,0,1);
+  animation: slideUp 0.38s cubic-bezier(0.16, 1, 0.3, 1);
   max-height: 92dvh; overflow-y: auto;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
 }
 
 .handle {
-  width: 32px; height: 4px;
-  background: var(--border2); border-radius: 4px;
+  width: 36px; height: 4px;
+  background: rgba(255, 255, 255, 0.16); border-radius: 4px;
   margin: 12px auto 0;
 }
 
 .header {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px 4px;
+  padding: 18px 24px 8px;
 }
 
 .sheetTitle {
   font-family: 'Instrument Serif', serif;
   font-style: italic;
-  font-size: 20px; font-weight: 400; color: var(--text);
+  font-size: 26px; font-weight: 400;
+  color: #fff;
+  background: linear-gradient(135deg, #ffffff 0%, #a5a5cc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .closeBtn {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--surface2); border: 1px solid var(--border);
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex; align-items: center; justify-content: center;
   color: var(--text3);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  transform: rotate(90deg);
 }
 
 .form {
-  padding: 12px 20px 28px;
-  display: flex; flex-direction: column; gap: 12px;
+  padding: 12px 24px 32px;
+  display: flex; flex-direction: column; gap: 18px;
 }
 
 .titleInput {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 13px 15px;
-  font-size: 16px; font-weight: 500; color: var(--text);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px; padding: 15px 18px;
+  font-size: 16px; font-weight: 600; color: var(--text);
   outline: none; width: 100%;
-  transition: border-color 0.15s;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
-.titleInput:focus   { border-color: var(--accent); }
-.titleInput::placeholder { color: var(--text3); }
+.titleInput:focus {
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(123, 108, 246, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+.titleInput::placeholder { color: var(--text3); font-weight: 400; }
 
 .noteInput {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 11px 15px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px; padding: 12px 18px;
   font-size: 14px; color: var(--text);
-  outline: none; resize: none; width: 100%; line-height: 1.5;
-  transition: border-color 0.15s;
+  outline: none; resize: none; width: 100%; line-height: 1.6;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
-.noteInput:focus     { border-color: rgba(123,108,246,0.4); }
+.noteInput:focus {
+  border-color: rgba(123, 108, 246, 0.5);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(123, 108, 246, 0.12), inset 0 2px 4px rgba(0, 0, 0, 0.15);
+}
 .noteInput::placeholder { color: var(--text3); }
 
-.section { display: flex; flex-direction: column; gap: 6px; }
+.section { display: flex; flex-direction: column; gap: 8px; }
 
 .label {
-  font-size: 11px; font-weight: 600; color: var(--text3);
-  text-transform: uppercase; letter-spacing: 0.08em;
+  font-size: 10px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.12em;
+  display: flex; align-items: center; gap: 6px;
+}
+.label::after {
+  content: '';
+  width: 3px; height: 3px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.8;
 }
 
-.pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.pills { display: flex; gap: 8px; width: 100%; }
 
 .pill {
-  padding: 6px 13px; border-radius: 20px;
-  font-size: 13px; color: var(--text3);
-  background: var(--surface2); border: 1px solid var(--border);
-  transition: all 0.12s;
+  flex: 1;
+  padding: 11px 14px; border-radius: 14px;
+  font-size: 13px; font-weight: 600; color: var(--text3);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.pill.pillActive {
-  background: var(--accent-dim); color: var(--accent2);
-  border-color: rgba(123,108,246,0.35);
+.pill:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+.pillActive {
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+.pillHighActive {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.16) 0%, rgba(239, 68, 68, 0.32) 100%) !important;
+  border-color: rgba(239, 68, 68, 0.45) !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);
+}
+.pillMediumActive {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.16) 0%, rgba(245, 158, 11, 0.32) 100%) !important;
+  border-color: rgba(245, 158, 11, 0.45) !important;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
+}
+.pillLowActive {
+  background: linear-gradient(135deg, rgba(163, 163, 163, 0.12) 0%, rgba(163, 163, 163, 0.24) 100%) !important;
+  border-color: rgba(163, 163, 163, 0.35) !important;
+  box-shadow: 0 4px 15px rgba(163, 163, 163, 0.08);
 }
 
 .dateTimeGroup {
@@ -93,41 +151,62 @@
 
 .dateInput,
 .timeInput {
-  background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius-sm); padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px; padding: 12px 16px;
   font-size: 14px; color: var(--text); outline: none;
   color-scheme: dark; width: 100%;
-  transition: border-color 0.15s;
+  transition: all 0.2s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .dateInput:focus,
-.timeInput:focus { border-color: rgba(123,108,246,0.4); }
+.timeInput:focus {
+  border-color: var(--accent);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(123, 108, 246, 0.18), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-.catPills { display: flex; gap: 6px; flex-wrap: wrap; }
+.catPills { display: flex; gap: 8px; flex-wrap: wrap; }
 
 .catPill {
-  padding: 5px 11px; border-radius: 20px;
-  font-size: 12px; color: var(--text3);
-  background: var(--surface2); border: 1px solid var(--border);
-  transition: all 0.12s;
+  padding: 8px 14px; border-radius: 20px;
+  font-size: 13px; font-weight: 500; color: var(--text3);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.catPill:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 .catPill.catActive {
-  background: color-mix(in srgb, var(--cc, var(--accent)) 14%, transparent);
+  background: color-mix(in srgb, var(--cc, var(--accent)) 16%, transparent);
   color: var(--cc, var(--accent2));
-  border-color: color-mix(in srgb, var(--cc, var(--accent)) 35%, transparent);
+  border-color: color-mix(in srgb, var(--cc, var(--accent)) 45%, transparent);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--cc, var(--accent)) 8%, transparent);
+  font-weight: 600;
 }
 
 .submitBtn {
   margin-top: 4px; padding: 15px;
-  border-radius: var(--radius-sm);
-  background: var(--accent); color: #fff;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent) 0%, #9b8cff 100%);
+  color: #fff;
   font-size: 15px; font-weight: 600;
   display: flex; align-items: center; justify-content: center;
   min-height: 50px;
-  transition: opacity 0.15s, transform 0.1s;
-  box-shadow: 0 4px 20px var(--accent-glow);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(123, 108, 246, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
 }
-.submitBtn:disabled          { opacity: 0.4; box-shadow: none; }
-.submitBtn:not(:disabled):active { transform: scale(0.97); }
+.submitBtn:hover:not(:disabled) {
+  box-shadow: 0 6px 24px rgba(123, 108, 246, 0.45);
+  transform: translateY(-1px);
+}
+.submitBtn:disabled { opacity: 0.35; box-shadow: none; transform: none; cursor: not-allowed; }
+.submitBtn:not(:disabled):active { transform: translateY(1px); }
 
 .spinner {
   width: 18px; height: 18px;
@@ -139,9 +218,9 @@
 
 .formActions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .formActions .submitBtn {
@@ -151,24 +230,42 @@
 
 .deleteBtn {
   padding: 15px 22px;
-  border-radius: var(--radius-sm);
-  background: var(--red-dim);
-  color: var(--red);
+  border-radius: 16px;
+  background: rgba(239, 68, 68, 0.08);
+  color: #f87171;
   font-size: 15px;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 50px;
-  transition: opacity 0.15s, transform 0.15s;
-  border: 1px solid rgba(248, 113, 113, 0.15);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid rgba(239, 68, 68, 0.18);
+  cursor: pointer;
 }
-
+.deleteBtn:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.16);
+  border-color: rgba(239, 68, 68, 0.32);
+  transform: translateY(-1px);
+}
 .deleteBtn:not(:disabled):active {
-  transform: scale(0.97);
+  transform: translateY(1px);
 }
-
 .deleteBtn:disabled {
   opacity: 0.4;
+  cursor: not-allowed;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100px); }
+  to { transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
