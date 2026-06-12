@@ -130,6 +130,12 @@ export default function SettingsView({ onSettingsChange, showToast, triggerTestN
                       <option value={3}>⏱️ Every 3 minutes (Testing)</option>
                       <option value={15}>⏱️ Every 15 minutes</option>
                       <option value={60}>⏱️ Every 1 hour</option>
+                      <option value={120}>⏱️ Every 2 hours</option>
+                      <option value={180}>⏱️ Every 3 hours</option>
+                      <option value={240}>⏱️ Every 4 hours</option>
+                      <option value={300}>⏱️ Every 5 hours</option>
+                      <option value={360}>⏱️ Every 6 hours</option>
+                      <option value={720}>⏱️ Every 12 hours</option>
                       <option value={0}>⏹️ Manual (Only when app opens)</option>
                     </select>
                   </div>
