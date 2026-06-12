@@ -1,0 +1,279 @@
+.container {
+  padding: 56px 22px 24px;
+  animation: fadeUp 0.3s ease both;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Calendar Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.monthTitle {
+  display: flex;
+  flex-direction: column;
+}
+
+.monthLabel {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-size: 38px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1;
+}
+
+.yearLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text3);
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text2);
+  transition: all 0.15s;
+}
+
+.iconBtn:hover {
+  color: var(--text);
+  background: var(--surface3);
+  border-color: var(--border2);
+}
+
+.iconBtn:active {
+  transform: scale(0.92);
+}
+
+.todayBtn {
+  padding: 0 12px;
+  height: 32px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: all 0.15s;
+}
+
+.todayBtn:hover {
+  background: var(--surface3);
+  border-color: var(--border2);
+}
+
+/* Weekday Labels */
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.weekday {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+/* Calendar Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+}
+
+.cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 2px 4px;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.cellDayNum {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.otherMonth {
+  opacity: 0.25;
+}
+
+.cell:hover {
+  background: var(--surface2);
+}
+
+.today {
+  border-color: var(--accent-dim);
+  background: rgba(123, 108, 246, 0.05);
+}
+
+.today .cellDayNum {
+  color: var(--accent2);
+  font-weight: 700;
+}
+
+.selected {
+  background: var(--accent) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.selected .cellDayNum {
+  font-weight: 700;
+}
+
+.selected .otherMonth {
+  opacity: 0.8;
+}
+
+/* Task Dots */
+.dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  height: 10px;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+
+.selected .dot {
+  background-color: #fff !important;
+}
+
+.moreCount {
+  font-size: 8px;
+  font-weight: 600;
+  transform: scale(0.8);
+  margin-left: -1px;
+}
+
+.selected .moreCount {
+  color: #fff;
+}
+
+/* Detail Section Below Calendar */
+.taskSection {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+
+.dateLabelGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dateDetail {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.addBtn {
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent2);
+  background: var(--accent-dim);
+  border: 1px solid rgba(123, 108, 246, 0.25);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s;
+}
+
+.addBtn:hover {
+  background: rgba(123, 108, 246, 0.22);
+  border-color: rgba(123, 108, 246, 0.45);
+}
+
+.addBtn:active {
+  transform: scale(0.95);
+}
+
+.loader {
+  font-size: 13px;
+  color: var(--text2);
+  text-align: center;
+  padding: 24px 0;
+}
+
+.empty {
+  text-align: center;
+  padding: 32px 16px;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+}
+
+.emptyText {
+  font-size: 13px;
+  color: var(--text2);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

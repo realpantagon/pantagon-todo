@@ -129,3 +129,39 @@
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
+
+.formActions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.formActions .submitBtn {
+  flex: 1;
+  margin-top: 0;
+}
+
+.deleteBtn {
+  padding: 15px 22px;
+  border-radius: var(--radius-sm);
+  background: var(--red-dim);
+  color: var(--red);
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  transition: opacity 0.15s, transform 0.15s;
+  border: 1px solid rgba(248, 113, 113, 0.15);
+}
+
+.deleteBtn:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+.deleteBtn:disabled {
+  opacity: 0.4;
+}
+

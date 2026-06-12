@@ -7,7 +7,7 @@ const PRIORITIES = [
   { id: 'low',    label: '⚪ Low' },
 ]
 
-export default function AddTodoSheet({ todo, categories, onSave, onClose }) {
+export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClose }) {
   const [title,      setTitle]      = useState(todo?.title      || '')
   const [note,       setNote]       = useState(todo?.note       || '')
   const [priority,   setPriority]   = useState(todo?.priority   || 'medium')
@@ -30,6 +30,15 @@ export default function AddTodoSheet({ todo, categories, onSave, onClose }) {
       due_date:    dueDate    || null,
     })
     setSaving(false)
+  }
+
+  async function handleDeleteClick() {
+    if (window.confirm('Are you sure you want to delete this task?')) {
+      setSaving(true)
+      await onDelete(todo.id)
+      setSaving(false)
+      onClose()
+    }
   }
 
   return (
@@ -78,7 +87,6 @@ export default function AddTodoSheet({ todo, categories, onSave, onClose }) {
             <label className={styles.label}>Due date</label>
             <input type="date" className={styles.dateInput}
               value={dueDate} onChange={e => setDueDate(e.target.value)}
-              min={new Date().toISOString().slice(0, 10)}
             />
           </div>
 
@@ -92,18 +100,30 @@ export default function AddTodoSheet({ todo, categories, onSave, onClose }) {
                 >All</button>
                 {categories.map(c => (
                   <button key={c.id} type="button"
-                    className={`${styles.catPill} ${categoryId === c.id ? styles.catActive : ''}`}
-                    style={categoryId === c.id ? { '--cc': c.color } : {}}
-                    onClick={() => setCategoryId(categoryId === c.id ? '' : c.id)}
+                     className={`${styles.catPill} ${categoryId === c.id ? styles.catActive : ''}`}
+                     style={categoryId === c.id ? { '--cc': c.color } : {}}
+                     onClick={() => setCategoryId(categoryId === c.id ? '' : c.id)}
                   >{c.icon} {c.name}</button>
                 ))}
               </div>
             </div>
           )}
 
-          <button type="submit" className={styles.submitBtn} disabled={!title.trim() || saving}>
-            {saving ? <span className={styles.spinner}/> : (todo ? 'Save changes' : 'Add Task')}
-          </button>
+          <div className={styles.formActions}>
+            {todo && onDelete && (
+              <button
+                type="button"
+                className={styles.deleteBtn}
+                onClick={handleDeleteClick}
+                disabled={saving}
+              >
+                Delete
+              </button>
+            )}
+            <button type="submit" className={styles.submitBtn} disabled={!title.trim() || saving}>
+              {saving ? <span className={styles.spinner}/> : (todo ? 'Save changes' : 'Add Task')}
+            </button>
+          </div>
         </form>
       </div>
     </div>

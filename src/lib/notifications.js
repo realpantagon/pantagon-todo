@@ -82,16 +82,68 @@ function showLocalNotification(title, body, tag) {
   })
 }
 
-export function checkAndNotify(todos) {
+export function checkAndNotify(todos, settings = {}) {
   if (Notification.permission !== 'granted') return
-  const pending = todos.filter(t => !t.completed)
-  pending.forEach((todo, i) => {
-    setTimeout(() => {
-      showLocalNotification(
-        `📌 งานค้าง: ${todo.title}`,
-        todo.due_date ? `กำหนด: ${todo.due_date}` : 'ยังไม่ได้กำหนดวัน',
-        `todo-${todo.id}`
-      )
-    }, i * 1000)
-  })
+  if (settings.notificationsEnabled === false) return
+
+  const today = new Date().toISOString().slice(0, 10)
+  const scope = settings.notifScope || 'today_overdue'
+  
+  const overdue = todos.filter(t => !t.completed && t.due_date && t.due_date < today)
+  const dueToday = todos.filter(t => !t.completed && t.due_date === today)
+  const otherPending = todos.filter(t => !t.completed && (!t.due_date || t.due_date > today))
+  
+  let targetTodos
+  if (scope === 'overdue') {
+    targetTodos = overdue
+  } else if (scope === 'today_overdue') {
+    targetTodos = [...overdue, ...dueToday]
+  } else {
+    targetTodos = [...overdue, ...dueToday, ...otherPending]
+  }
+  
+  if (targetTodos.length === 0) return
+
+  const strategy = settings.notifStrategy || 'summary'
+  
+  if (strategy === 'summary') {
+    // Consolidate into a single group notification
+    let title
+    let body
+    
+    const overdueCount = targetTodos.filter(t => t.due_date && t.due_date < today).length
+    const todayCount = targetTodos.filter(t => t.due_date === today).length
+    
+    if (overdueCount > 0 && todayCount > 0) {
+      title = `⚠️ มีงานค้าง: เลยกำหนด ${overdueCount} และของวันนี้ ${todayCount}`
+      body = `เลยกำหนด:\n` + targetTodos.filter(t => t.due_date && t.due_date < today).slice(0, 2).map(t => `• ${t.title}`).join('\n') + 
+             `\n\nงานวันนี้:\n` + targetTodos.filter(t => t.due_date === today).slice(0, 2).map(t => `• ${t.title}`).join('\n')
+    } else if (overdueCount > 0) {
+      title = `⚠️ งานเลยกำหนดส่ง! (${overdueCount} งาน)`
+      body = targetTodos.slice(0, 4).map(t => `• ${t.title}`).join('\n')
+    } else if (todayCount > 0) {
+      title = `📋 วันนี้มีงานต้องทำ! (${todayCount} งาน)`
+      body = targetTodos.slice(0, 4).map(t => `• ${t.title}`).join('\n')
+    } else {
+      title = `✦ มีงานรอทำอยู่ (${targetTodos.length} งาน)`
+      body = targetTodos.slice(0, 4).map(t => `• ${t.title}`).join('\n')
+    }
+    
+    if (targetTodos.length > 4) {
+      body += `\n...และงานอื่นอีก ${targetTodos.length - 4} รายการ`
+    }
+    
+    showLocalNotification(title, body, 'pantagon-summary')
+  } else {
+    // Individual alerts, but capped at 4 tasks to avoid annoying browser alerts
+    targetTodos.slice(0, 4).forEach((todo, i) => {
+      setTimeout(() => {
+        showLocalNotification(
+          `📌 งานค้าง: ${todo.title}`,
+          todo.due_date ? `กำหนด: ${todo.due_date}` : 'ยังไม่ได้กำหนดวัน',
+          `todo-${todo.id}`
+        )
+      }, i * 1000)
+    })
+  }
 }

@@ -1,3 +1,4 @@
+/* global clients */
 // Custom Service Worker — handles Web Push events
 self.addEventListener('push', event => {
   const data = event.data ? event.data.json() : {}

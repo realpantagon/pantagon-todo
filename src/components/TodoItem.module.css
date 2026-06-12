@@ -60,7 +60,7 @@
   transition: all 0.15s;
   color: #fff;
 }
-.check.checked  { background: var(--green); border-color: var(--green); animation: checkPop 0.3s ease; }
+.check.checked  { background: var(--bg); border-color: var(--accent); color: var(--accent); animation: checkPop 0.3s ease; }
 .check.checking { animation: spin 0.5s linear infinite; border-color: var(--accent); border-top-color: transparent; }
 
 /* Content */
@@ -99,3 +99,25 @@
 .date.overdue { color: var(--red); font-weight: 600; }
 
 .dot { font-size: 8px; }
+
+.cardEditBtn {
+  align-self: center;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--text2);
+  background: transparent;
+  transition: all 0.15s ease;
+  opacity: 0.6;
+  margin-left: 4px;
+}
+
+.cardEditBtn:hover {
+  opacity: 1;
+  color: var(--accent2);
+  background: var(--surface2);
+}
+
