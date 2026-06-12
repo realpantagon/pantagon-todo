@@ -2,19 +2,20 @@
   position: fixed; inset: 0;
   background: var(--overlay-bg);
   z-index: 50;
-  display: flex; align-items: flex-end;
   animation: fadeIn 0.2s ease;
   backdrop-filter: blur(6px);
 }
 
 .sheet {
-  width: 100%; max-width: 480px; margin: 0 auto;
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  width: 100%; max-width: 480px;
   background: var(--surface);
   border-top-left-radius: 24px; border-top-right-radius: 24px;
   border: 1px solid var(--border); border-bottom: none;
-  margin-bottom: -50px;
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 50px);
-  animation: slideUp 0.35s cubic-bezier(0.32,0.72,0,1);
+  animation: slideUp 0.35s cubic-bezier(0.32,0.72,0,1) forwards;
   max-height: 92dvh; overflow-y: auto;
 }
 
@@ -240,4 +241,9 @@
 .footerText {
   font-size: 11px;
   color: var(--text3);
+}
+
+@keyframes slideUp {
+  from { transform: translate(-50%, 100%); }
+  to { transform: translate(-50%, 0); }
 }
