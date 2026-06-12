@@ -194,16 +194,19 @@ export default function SettingsView({ onSettingsChange, showToast, triggerTestN
                 </button>
               </div>
 
-              <div className={styles.field} style={{ borderTop: '1px dashed var(--border)', paddingTop: '14px', marginTop: '4px' }}>
-                <label className={styles.selectLabel}>App Theme</label>
-                <select
-                  className={styles.select}
-                  value={settings.theme}
-                  onChange={e => handleSelectChange('theme', e.target.value)}
+              <div className={styles.row} style={{ borderTop: '1px dashed var(--border)', paddingTop: '14px', marginTop: '4px' }}>
+                <div className={styles.info}>
+                  <span className={styles.label}>Pristine Light Theme</span>
+                  <span className={styles.sublabel}>Switch between Light and Dark mode</span>
+                </div>
+                <button
+                  type="button"
+                  className={`${styles.toggle} ${settings.theme === 'light' ? styles.toggleOn : ''}`}
+                  onClick={() => handleSelectChange('theme', settings.theme === 'light' ? 'dark' : 'light')}
+                  aria-label="Toggle theme"
                 >
-                  <option value="dark">🌑 Sleek Dark</option>
-                  <option value="light">☀️ Pristine Light</option>
-                </select>
+                  <span className={styles.toggleKnob} />
+                </button>
               </div>
             </div>
           </div>
