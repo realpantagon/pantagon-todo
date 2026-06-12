@@ -2,38 +2,32 @@
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  padding-bottom: 100px;
-  position: relative;
+  padding-bottom: 110px;
 }
 
-/* FAB */
 .fab {
   position: fixed;
-  bottom: 28px;
+  bottom: 32px;
   right: 50%;
   transform: translateX(50%);
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: var(--accent);
-  color: #0c0c0e;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(232,201,122,0.45);
+  box-shadow: 0 0 0 8px var(--accent-dim), 0 8px 32px var(--accent-glow);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   z-index: 40;
 }
 .fab:active {
-  transform: translateX(50%) scale(0.92);
-  box-shadow: 0 2px 10px rgba(232,201,122,0.3);
+  transform: translateX(50%) scale(0.9);
+  box-shadow: 0 0 0 4px var(--accent-dim);
 }
 
-/* Limit fab to app width on desktop */
 @media (min-width: 480px) {
-  .fab {
-    right: calc(50% - 210px);
-    transform: none;
-  }
-  .fab:active { transform: scale(0.92); }
+  .fab { right: calc(50% - 212px); transform: none; }
+  .fab:active { transform: scale(0.9); }
 }

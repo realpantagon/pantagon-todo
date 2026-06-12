@@ -1,55 +1,62 @@
-.wrapper {
-  padding: 12px 20px 4px;
+.wrap {
+  padding: 10px 22px 4px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.filters {
+/* Status tabs */
+.tabs {
   display: flex;
-  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 2px;
 }
 
-.chip {
-  padding: 6px 14px;
-  border-radius: 20px;
+.tab {
+  flex: 1;
+  padding: 7px 0;
+  border-radius: 9px;
   font-size: 13px;
   font-weight: 500;
   color: var(--text3);
-  background: var(--surface);
-  border: 1px solid var(--border);
   transition: all 0.15s ease;
+  letter-spacing: 0.01em;
 }
 
-.chip.active {
-  background: var(--accent-dim);
-  color: var(--accent);
-  border-color: rgba(232,201,122,0.3);
+.tab.tabActive {
+  background: var(--surface3);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
 }
 
+/* Category chips */
 .cats {
   display: flex;
-  gap: 6px;
+  gap: 5px;
   overflow-x: auto;
   padding-bottom: 2px;
   scrollbar-width: none;
 }
 .cats::-webkit-scrollbar { display: none; }
 
-.catChip {
-  padding: 4px 10px;
+.cat {
+  padding: 5px 11px;
   border-radius: 20px;
   font-size: 12px;
+  font-weight: 500;
   color: var(--text3);
-  background: var(--surface2);
+  background: var(--surface);
   border: 1px solid var(--border);
   white-space: nowrap;
-  transition: all 0.15s ease;
   flex-shrink: 0;
+  transition: all 0.12s;
 }
 
-.catChip.catActive {
-  background: color-mix(in srgb, var(--cat-color, var(--accent)) 15%, transparent);
-  color: var(--cat-color, var(--accent));
-  border-color: color-mix(in srgb, var(--cat-color, var(--accent)) 40%, transparent);
+.cat.catActive {
+  background: color-mix(in srgb, var(--cc, var(--accent)) 14%, transparent);
+  color: var(--cc, var(--accent2));
+  border-color: color-mix(in srgb, var(--cc, var(--accent)) 35%, transparent);
 }

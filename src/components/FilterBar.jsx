@@ -1,19 +1,19 @@
 import styles from './FilterBar.module.css'
 
 const FILTERS = [
-  { id: 'all', label: 'ทั้งหมด' },
-  { id: 'today', label: 'วันนี้' },
-  { id: 'done', label: 'เสร็จแล้ว' },
+  { id: 'all',   label: 'All' },
+  { id: 'today', label: 'Today' },
+  { id: 'done',  label: 'Done' },
 ]
 
 export default function FilterBar({ filter, setFilter, categories, categoryFilter, setCategoryFilter }) {
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.filters}>
+    <div className={styles.wrap}>
+      <div className={styles.tabs}>
         {FILTERS.map(f => (
           <button
             key={f.id}
-            className={`${styles.chip} ${filter === f.id ? styles.active : ''}`}
+            className={`${styles.tab} ${filter === f.id ? styles.tabActive : ''}`}
             onClick={() => setFilter(f.id)}
           >
             {f.label}
@@ -23,16 +23,16 @@ export default function FilterBar({ filter, setFilter, categories, categoryFilte
       {categories.length > 0 && (
         <div className={styles.cats}>
           <button
-            className={`${styles.catChip} ${!categoryFilter ? styles.catActive : ''}`}
+            className={`${styles.cat} ${!categoryFilter ? styles.catActive : ''}`}
             onClick={() => setCategoryFilter(null)}
           >
-            ทุกหมวด
+            All
           </button>
           {categories.map(c => (
             <button
               key={c.id}
-              className={`${styles.catChip} ${categoryFilter === c.id ? styles.catActive : ''}`}
-              style={categoryFilter === c.id ? { '--cat-color': c.color } : {}}
+              className={`${styles.cat} ${categoryFilter === c.id ? styles.catActive : ''}`}
+              style={categoryFilter === c.id ? { '--cc': c.color } : {}}
               onClick={() => setCategoryFilter(categoryFilter === c.id ? null : c.id)}
             >
               {c.icon} {c.name}

@@ -1,71 +1,106 @@
-.bar {
-  margin: 8px 20px 0;
-  padding: 14px 18px;
+.wrap {
+  margin: 6px 22px 0;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  padding: 16px 18px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   animation: fadeUp 0.4s ease both;
 }
 
-.stat {
+/* Ring */
+.ringWrap {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.ring {
+  width: 56px;
+  height: 56px;
+  transform: rotate(-90deg);
+}
+
+.ringTrack {
+  fill: none;
+  stroke: var(--border2);
+  stroke-width: 4;
+}
+
+.ringFill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 138.2;
+  stroke-dashoffset: 138.2;
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1);
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+.ringInner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ringPct {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.ringPctSign {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--text3);
+}
+
+/* Stats grid */
+.stats {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-width: 36px;
+  gap: 6px;
 }
 
-.num {
-  font-size: 22px;
-  font-weight: 600;
+.statRow {
+  display: flex;
+  gap: 6px;
+}
+
+.pill {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 6px 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.pill.pillAlert {
+  background: color-mix(in srgb, var(--c) 10%, transparent);
+  border-color: color-mix(in srgb, var(--c) 25%, transparent);
+}
+
+.pillNum {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--c, var(--text));
   line-height: 1;
-  color: var(--text);
 }
 
-.today { color: var(--accent); }
-.done { color: var(--green); }
-
-.label {
+.pillLabel {
   font-size: 10px;
   color: var(--text3);
-  margin-top: 2px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.divider {
-  width: 1px;
-  height: 28px;
-  background: var(--border);
-}
-
-.progress {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.progressTrack {
-  flex: 1;
-  height: 4px;
-  background: var(--border2);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.progressFill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--green));
-  border-radius: 4px;
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.pct {
-  font-size: 11px;
-  color: var(--text3);
-  min-width: 28px;
-  text-align: right;
+  letter-spacing: 0.07em;
 }

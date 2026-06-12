@@ -33,40 +33,33 @@ export default function App() {
       setTodos(t)
       setCategories(c)
     } catch {
-      showToast('โหลดข้อมูลไม่ได้', 'error')
+      showToast('Failed to load', 'error')
     } finally {
       setLoading(false)
     }
   }, [showToast])
 
   useEffect(() => { load() }, [load])
-
-  // Keep ref in sync so interval always has latest todos
   useEffect(() => { todosRef.current = todos }, [todos])
 
-  // Notify when todos finish loading (and permission granted)
+  // Fire once after todos load
   useEffect(() => {
     if (!notifEnabled || loading || todos.length === 0) return
     checkAndNotify(todosRef.current)
   }, [loading, notifEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Interval every 3 min — restart when notifEnabled changes
+  // 3-min interval
   useEffect(() => {
-    if (!notifEnabled) {
-      clearInterval(intervalRef.current)
-      return
-    }
+    if (!notifEnabled) { clearInterval(intervalRef.current); return }
     intervalRef.current = setInterval(() => checkAndNotify(todosRef.current), 3 * 60 * 1000)
     return () => clearInterval(intervalRef.current)
   }, [notifEnabled])
 
-  // Re-notify when user comes back to the tab/app (handles mobile background throttle)
+  // Re-notify on app focus (handles mobile background throttle)
   useEffect(() => {
     if (!notifEnabled) return
     const onVisible = () => {
-      if (document.visibilityState === 'visible') {
-        checkAndNotify(todosRef.current)
-      }
+      if (document.visibilityState === 'visible') checkAndNotify(todosRef.current)
     }
     document.addEventListener('visibilitychange', onVisible)
     return () => document.removeEventListener('visibilitychange', onVisible)
@@ -75,33 +68,23 @@ export default function App() {
   const handleEnableNotif = useCallback(async () => {
     const ok = await enableNotifications()
     setNotifEnabled(ok)
-    if (!ok) showToast('ไม่ได้รับอนุญาตแจ้งเตือน', 'error')
-    else showToast('เปิดการแจ้งเตือนแล้ว — บันทึก device แล้ว')
+    if (!ok) showToast('Notification permission denied', 'error')
+    else showToast('Notifications enabled')
   }, [showToast])
 
   const handleToggle = useCallback(async (id, completed) => {
     setTodos(prev => prev.map(t => t.id === id
-      ? { ...t, completed, completed_at: completed ? new Date().toISOString() : null }
-      : t
-    ))
+      ? { ...t, completed, completed_at: completed ? new Date().toISOString() : null } : t))
     try {
       await toggleTodo(id, completed)
-      if (completed) showToast('✓ เสร็จแล้ว!')
-    } catch {
-      load()
-      showToast('เกิดข้อผิดพลาด', 'error')
-    }
+      if (completed) showToast('Done!')
+    } catch { load() }
   }, [load, showToast])
 
   const handleDelete = useCallback(async (id) => {
     setTodos(prev => prev.filter(t => t.id !== id))
-    try {
-      await deleteTodo(id)
-      showToast('ลบแล้ว')
-    } catch {
-      load()
-      showToast('เกิดข้อผิดพลาด', 'error')
-    }
+    try { await deleteTodo(id); showToast('Deleted') }
+    catch { load() }
   }, [load, showToast])
 
   const handleSave = useCallback(async (data) => {
@@ -109,17 +92,14 @@ export default function App() {
       if (editTodo) {
         const updated = await updateTodo(editTodo.id, data)
         setTodos(prev => prev.map(t => t.id === editTodo.id ? updated : t))
-        showToast('อัปเดตแล้ว')
+        showToast('Updated')
       } else {
         const created = await createTodo(data)
         setTodos(prev => [created, ...prev])
-        showToast('เพิ่มงานแล้ว')
+        showToast('Task added')
       }
-      setShowAdd(false)
-      setEditTodo(null)
-    } catch {
-      showToast('บันทึกไม่สำเร็จ', 'error')
-    }
+      setShowAdd(false); setEditTodo(null)
+    } catch { showToast('Save failed', 'error') }
   }, [editTodo, showToast])
 
   const today = new Date().toISOString().slice(0, 10)
@@ -132,11 +112,12 @@ export default function App() {
   })
 
   const todayCount = todos.filter(t => t.due_date === today && !t.completed).length
+  const overdueCount = todos.filter(t => !t.completed && t.due_date && t.due_date < today).length
 
   return (
     <div className="app">
       <Header notifEnabled={notifEnabled} onEnableNotif={handleEnableNotif} />
-      <StatsBar todos={todos} todayCount={todayCount} />
+      <StatsBar todos={todos} todayCount={todayCount} overdueCount={overdueCount} />
       <FilterBar
         filter={filter} setFilter={setFilter}
         categories={categories}
@@ -150,14 +131,9 @@ export default function App() {
         onDelete={handleDelete}
         onEdit={t => { setEditTodo(t); setShowAdd(true) }}
       />
-      <button
-        className="fab"
-        onClick={() => { setEditTodo(null); setShowAdd(true) }}
-        aria-label="เพิ่มงานใหม่"
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-          <line x1="12" y1="5" x2="12" y2="19"/>
-          <line x1="5" y1="12" x2="19" y2="12"/>
+      <button className="fab" onClick={() => { setEditTodo(null); setShowAdd(true) }} aria-label="Add task">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
       </button>
       {showAdd && (
