@@ -12,7 +12,8 @@
   background: var(--surface);
   border-top-left-radius: 24px; border-top-right-radius: 24px;
   border: 1px solid var(--border); border-bottom: none;
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  margin-bottom: -10px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
   animation: slideUp 0.35s cubic-bezier(0.32,0.72,0,1);
   max-height: 92dvh; overflow-y: auto;
 }
@@ -53,7 +54,7 @@
 }
 
 .container {
-  padding: 12px 20px 28px;
+  padding: 12px 20px 16px;
   display: flex;
   flex-direction: column;
   gap: 20px;

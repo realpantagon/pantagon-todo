@@ -12,7 +12,8 @@
   background: linear-gradient(180deg, var(--sheet-grad-start) 0%, var(--sheet-grad-end) 100%);
   border-top-left-radius: 28px; border-top-right-radius: 28px;
   border: 1px solid var(--glass-border); border-bottom: none;
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  margin-bottom: -10px;
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 10px);
   animation: slideUp 0.38s cubic-bezier(0.16, 1, 0.3, 1);
   max-height: 92dvh; overflow-y: auto;
   box-shadow: 0 -10px 40px var(--sheet-shadow);
@@ -52,7 +53,7 @@
 }
 
 .form {
-  padding: 12px 24px 32px;
+  padding: 12px 24px 16px;
   display: flex; flex-direction: column; gap: 18px;
 }
 
