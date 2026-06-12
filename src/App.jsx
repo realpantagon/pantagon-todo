@@ -52,7 +52,7 @@ export default function App() {
     }
     // Fire once immediately, then every 5 minutes
     checkAndNotify(todosRef.current)
-    intervalRef.current = setInterval(() => checkAndNotify(todosRef.current), 5 * 60 * 1000)
+    intervalRef.current = setInterval(() => checkAndNotify(todosRef.current), 3 * 60 * 1000)
     return () => clearInterval(intervalRef.current)
   }, [notifEnabled])
 
