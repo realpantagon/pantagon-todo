@@ -4,6 +4,8 @@ export const DEFAULT_SETTINGS = {
   notifScope: 'today_overdue',
   notifInterval: 60,
   soundEnabled: true,
+  dueSoonMinutes: 30,
+  quietHoursEnabled: true,
 }
 
 // Custom synthesizer ding sound using Web Audio API

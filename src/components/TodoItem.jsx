@@ -13,12 +13,36 @@ function formatDate(date) {
   return `${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]} ${d.getDate()}`
 }
 
+function formatDateTime(date, time) {
+  const formattedDate = formatDate(date)
+  if (!formattedDate) return null
+  if (!time) return formattedDate
+  const parts = time.split(':')
+  const formattedTime = parts.slice(0, 2).join(':')
+  return `${formattedDate} at ${formattedTime}`
+}
+
 export default function TodoItem({ todo, style, onToggle, onDelete, onEdit }) {
   const [swiped, setSwiped] = useState(false)
   const [checking, setChecking] = useState(false)
   const startX = useRef(null)
 
-  const isOverdue = todo.due_date && !todo.completed && todo.due_date < new Date().toISOString().slice(0, 10)
+  const todayStr = new Date().toISOString().slice(0, 10)
+  let isOverdue = false
+  if (todo.due_date && !todo.completed) {
+    if (todo.due_date < todayStr) {
+      isOverdue = true
+    } else if (todo.due_date === todayStr && todo.due_time) {
+      const now = new Date()
+      const currentHours = now.getHours()
+      const currentMinutes = now.getMinutes()
+      const [dueHours, dueMinutes] = todo.due_time.split(':').map(Number)
+      if (currentHours > dueHours || (currentHours === dueHours && currentMinutes > dueMinutes)) {
+        isOverdue = true
+      }
+    }
+  }
+
   const catColor  = todo.todo_categories?.color || 'var(--border2)'
 
   async function handleCheck() {
@@ -89,7 +113,7 @@ export default function TodoItem({ todo, style, onToggle, onDelete, onEdit }) {
             )}
             {todo.due_date && (
               <span className={`${styles.date} ${isOverdue ? styles.overdue : ''}`}>
-                {isOverdue && '⚠ '}{formatDate(todo.due_date)}
+                {isOverdue && '⚠ '}{formatDateTime(todo.due_date, todo.due_time)}
               </span>
             )}
             <span className={styles.dot} style={{ color: PRIORITY_COLOR[todo.priority] }}>●</span>

@@ -192,6 +192,21 @@
   margin-top: 2px;
 }
 
+.rowField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+
+.labelSmall {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
 .testBtn {
   margin-top: 6px;
   padding: 10px 14px;

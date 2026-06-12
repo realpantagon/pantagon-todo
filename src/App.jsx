@@ -61,20 +61,19 @@ export default function App() {
   useEffect(() => {
     if (!settings.notificationsEnabled || loading || todos.length === 0) return
     checkAndNotify(todosRef.current, settings)
-  }, [loading, settings.notificationsEnabled, settings.notifScope, settings.notifStrategy]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loading, settings.notificationsEnabled, settings.dueSoonMinutes, settings.quietHoursEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Interval check
+  // Interval check - run every 1 minute to check time-sensitive boundaries (due soon, overdue, summaries)
   useEffect(() => {
     clearInterval(intervalRef.current)
-    if (!settings.notificationsEnabled || settings.notifInterval === 0) return
+    if (!settings.notificationsEnabled) return
 
-    const ms = settings.notifInterval * 60 * 1000
     intervalRef.current = setInterval(() => {
       checkAndNotify(todosRef.current, settings)
-    }, ms)
+    }, 60000)
 
     return () => clearInterval(intervalRef.current)
-  }, [settings.notificationsEnabled, settings.notifInterval, settings.notifScope, settings.notifStrategy]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [settings.notificationsEnabled, settings.dueSoonMinutes, settings.quietHoursEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Re-notify on app focus
   useEffect(() => {
@@ -84,7 +83,7 @@ export default function App() {
     }
     document.addEventListener('visibilitychange', onVisible)
     return () => document.removeEventListener('visibilitychange', onVisible)
-  }, [settings.notificationsEnabled, settings.notifScope, settings.notifStrategy]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [settings.notificationsEnabled, settings.dueSoonMinutes, settings.quietHoursEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleToggle = useCallback(async (id, completed) => {
     setTodos(prev => prev.map(t => t.id === id
@@ -195,7 +194,7 @@ export default function App() {
           onSettingsChange={setSettings}
           showToast={showToast}
           triggerTestNotification={() => {
-            checkAndNotify(todosRef.current, { ...settings, notificationsEnabled: true })
+            checkAndNotify(todosRef.current, { ...settings, notificationsEnabled: true }, true)
           }}
           onClose={() => setShowSettings(false)}
         />

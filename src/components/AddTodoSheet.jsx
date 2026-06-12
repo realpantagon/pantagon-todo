@@ -13,6 +13,7 @@ export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClo
   const [priority,   setPriority]   = useState(todo?.priority   || 'medium')
   const [categoryId, setCategoryId] = useState(todo?.category_id || '')
   const [dueDate,    setDueDate]    = useState(todo?.due_date    || '')
+  const [dueTime,    setDueTime]    = useState(todo?.due_time    || '')
   const [saving,     setSaving]     = useState(false)
   const titleRef = useRef(null)
 
@@ -28,6 +29,7 @@ export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClo
       priority,
       category_id: categoryId || null,
       due_date:    dueDate    || null,
+      due_time:    dueTime    || null,
     })
     setSaving(false)
   }
@@ -83,11 +85,19 @@ export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClo
             </div>
           </div>
 
-          <div className={styles.section}>
-            <label className={styles.label}>Due date</label>
-            <input type="date" className={styles.dateInput}
-              value={dueDate} onChange={e => setDueDate(e.target.value)}
-            />
+          <div className={styles.dateTimeGroup}>
+            <div className={styles.section} style={{ flex: 1 }}>
+              <label className={styles.label}>Due date</label>
+              <input type="date" className={styles.dateInput}
+                value={dueDate} onChange={e => setDueDate(e.target.value)}
+              />
+            </div>
+            <div className={styles.section} style={{ flex: 1 }}>
+              <label className={styles.label}>Due time</label>
+              <input type="time" className={styles.timeInput}
+                value={dueTime} onChange={e => setDueTime(e.target.value)}
+              />
+            </div>
           </div>
 
           {categories.length > 0 && (

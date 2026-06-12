@@ -86,14 +86,21 @@
   border-color: rgba(123,108,246,0.35);
 }
 
-.dateInput {
+.dateTimeGroup {
+  display: flex;
+  gap: 12px;
+}
+
+.dateInput,
+.timeInput {
   background: var(--surface2); border: 1px solid var(--border);
   border-radius: var(--radius-sm); padding: 10px 14px;
   font-size: 14px; color: var(--text); outline: none;
   color-scheme: dark; width: 100%;
   transition: border-color 0.15s;
 }
-.dateInput:focus { border-color: rgba(123,108,246,0.4); }
+.dateInput:focus,
+.timeInput:focus { border-color: rgba(123,108,246,0.4); }
 
 .catPills { display: flex; gap: 6px; flex-wrap: wrap; }
 

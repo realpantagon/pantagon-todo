@@ -134,6 +134,35 @@ export default function SettingsView({ onSettingsChange, showToast, triggerTestN
                     </select>
                   </div>
 
+                  <div className={styles.field}>
+                    <label className={styles.selectLabel}>Due Soon Alerts</label>
+                    <select
+                      className={styles.select}
+                      value={settings.dueSoonMinutes}
+                      onChange={e => handleSelectChange('dueSoonMinutes', Number(e.target.value))}
+                    >
+                      <option value={15}>⏱️ 15 minutes before due</option>
+                      <option value={30}>⏱️ 30 minutes before due</option>
+                      <option value={60}>⏱️ 1 hour before due</option>
+                      <option value={0}>⏹️ Off</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.rowField}>
+                    <div className={styles.info}>
+                      <span className={styles.labelSmall}>Quiet Hours Protection</span>
+                      <span className={styles.sublabel}>Silence repeating overdue alerts (10 PM - 8 AM)</span>
+                    </div>
+                    <button
+                      type="button"
+                      className={`${styles.toggle} ${settings.quietHoursEnabled ? styles.toggleOn : ''}`}
+                      onClick={() => handleSelectChange('quietHoursEnabled', !settings.quietHoursEnabled)}
+                      aria-label="Toggle quiet hours protection"
+                    >
+                      <span className={styles.toggleKnob} />
+                    </button>
+                  </div>
+
                   <button
                     type="button"
                     className={styles.testBtn}
