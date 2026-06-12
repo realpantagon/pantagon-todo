@@ -44,16 +44,32 @@ export default function App() {
   // Keep ref in sync so interval always has latest todos
   useEffect(() => { todosRef.current = todos }, [todos])
 
-  // 5-minute notification interval
+  // Notify when todos finish loading (and permission granted)
+  useEffect(() => {
+    if (!notifEnabled || loading || todos.length === 0) return
+    checkAndNotify(todosRef.current)
+  }, [loading, notifEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Interval every 3 min — restart when notifEnabled changes
   useEffect(() => {
     if (!notifEnabled) {
       clearInterval(intervalRef.current)
       return
     }
-    // Fire once immediately, then every 5 minutes
-    checkAndNotify(todosRef.current)
     intervalRef.current = setInterval(() => checkAndNotify(todosRef.current), 3 * 60 * 1000)
     return () => clearInterval(intervalRef.current)
+  }, [notifEnabled])
+
+  // Re-notify when user comes back to the tab/app (handles mobile background throttle)
+  useEffect(() => {
+    if (!notifEnabled) return
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        checkAndNotify(todosRef.current)
+      }
+    }
+    document.addEventListener('visibilitychange', onVisible)
+    return () => document.removeEventListener('visibilitychange', onVisible)
   }, [notifEnabled])
 
   const handleEnableNotif = useCallback(async () => {
