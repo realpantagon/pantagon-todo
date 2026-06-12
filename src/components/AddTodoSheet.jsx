@@ -111,7 +111,7 @@ export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClo
                 <button type="button"
                   className={`${styles.catPill} ${!categoryId ? styles.catActive : ''}`}
                   onClick={() => setCategoryId('')}
-                >All</button>
+                >None</button>
                 {categories.map(c => (
                   <button key={c.id} type="button"
                      className={`${styles.catPill} ${categoryId === c.id ? styles.catActive : ''}`}
