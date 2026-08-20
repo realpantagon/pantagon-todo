@@ -26,6 +26,10 @@ export default function TodoItem({ todo, style, onToggle, onDelete, onEdit }) {
   const [swiped, setSwiped] = useState(false)
   const [checking, setChecking] = useState(false)
   const startX = useRef(null)
+  const startY = useRef(null)
+  // True once the finger has travelled far enough to be a scroll/swipe rather than a tap,
+  // so brushing the checkbox while scrolling never completes a task.
+  const dragged = useRef(false)
 
   const todayStr = new Date().toISOString().slice(0, 10)
   let isOverdue = false
@@ -46,12 +50,23 @@ export default function TodoItem({ todo, style, onToggle, onDelete, onEdit }) {
   const catColor  = todo.todo_categories?.color || 'var(--border2)'
 
   async function handleCheck() {
+    if (dragged.current) return
+    if (!todo.completed) navigator.vibrate?.(12)
     setChecking(true)
     await onToggle(todo.id, !todo.completed)
     setChecking(false)
   }
 
-  const onTouchStart = e => { startX.current = e.touches[0].clientX }
+  const onTouchStart = e => {
+    startX.current = e.touches[0].clientX
+    startY.current = e.touches[0].clientY
+    dragged.current = false
+  }
+  const onTouchMove = e => {
+    const dx = Math.abs(startX.current - e.touches[0].clientX)
+    const dy = Math.abs(startY.current - e.touches[0].clientY)
+    if (dx > 8 || dy > 8) dragged.current = true
+  }
   const onTouchEnd   = e => {
     const dx = startX.current - e.changedTouches[0].clientX
     if (dx > 60) setSwiped(true)
@@ -63,6 +78,7 @@ export default function TodoItem({ todo, style, onToggle, onDelete, onEdit }) {
       className={`${styles.wrapper} ${swiped ? styles.swiped : ''}`}
       style={style}
       onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
       {/* Swipe actions */}

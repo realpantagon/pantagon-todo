@@ -1,24 +1,95 @@
+import { useMemo, useState } from 'react'
 import styles from './StatsBar.module.css'
 
+const SCOPES = ['today', 'week', 'all']
+const SCOPE_LABEL = { today: 'TODAY', week: '7 DAYS', all: 'ALL' }
+
+/** YYYY-MM-DD in the device's local timezone (not UTC). */
+function localDay(value) {
+  const d = value instanceof Date ? value : new Date(value)
+  if (Number.isNaN(d.getTime())) return null
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+/**
+ * The set of tasks a scope measures: everything still open (that is the workload you
+ * are actually burning down) plus whatever you cleared inside the window. Old finished
+ * tasks stay out of the denominator, so each completion moves the number by a real amount
+ * instead of being diluted by months of history.
+ */
+function inScope(todos, scope, today, weekStart) {
+  if (scope === 'all') return todos
+  const from = scope === 'today' ? today : weekStart
+  return todos.filter(t => {
+    if (!t.completed) return true
+    const day = t.completed_at ? localDay(t.completed_at) : null
+    return !!day && day >= from && day <= today
+  })
+}
+
 export default function StatsBar({ todos, todayCount, overdueCount, onViewToggle, activeView }) {
+  const [scopeOverride, setScopeOverride] = useState(null)
+
   const pending = todos.filter(t => !t.completed).length
   const done    = todos.filter(t => t.completed).length
-  const total   = todos.length
-  const pct     = total > 0 ? Math.round((done / total) * 100) : 0
+
+  const { scope, scopeDone, scopeTotal, pct } = useMemo(() => {
+    const now = new Date()
+    const today = localDay(now)
+    const past = new Date(now)
+    past.setDate(past.getDate() - 6)
+    const weekStart = localDay(past)
+
+    const buckets = {}
+    for (const s of SCOPES) buckets[s] = inScope(todos, s, today, weekStart)
+
+    // Default to today's burn-down; only fall back to the all-time ratio when there is
+    // nothing left to burn down (no open tasks and nothing finished today).
+    const auto = buckets.today.length > 0 ? 'today' : 'all'
+    const active = scopeOverride && buckets[scopeOverride].length > 0 ? scopeOverride : auto
+
+    const list = buckets[active]
+    const d = list.filter(t => t.completed).length
+    return {
+      scope: active,
+      scopeDone: d,
+      scopeTotal: list.length,
+      pct: list.length > 0 ? Math.round((d / list.length) * 100) : 0,
+    }
+  }, [todos, scopeOverride])
+
+  function cycleScope() {
+    const i = SCOPES.indexOf(scope)
+    setScopeOverride(SCOPES[(i + 1) % SCOPES.length])
+  }
 
   return (
     <div className={styles.wrap}>
-      {/* Progress ring + main number */}
-      <div className={styles.ringWrap}>
-        <svg className={styles.ring} viewBox="0 0 56 56">
-          <circle cx="28" cy="28" r="22" className={styles.ringTrack}/>
-          <circle cx="28" cy="28" r="22" className={styles.ringFill}
-            style={{ strokeDashoffset: `${138.2 - (138.2 * pct / 100)}` }}/>
-        </svg>
-        <div className={styles.ringInner}>
-          <span className={styles.ringPct}>{pct}<span className={styles.ringPctSign}>%</span></span>
-        </div>
-      </div>
+      {/* Progress ring + main number — tap to change the window it measures */}
+      <button
+        type="button"
+        className={styles.ringCol}
+        onClick={cycleScope}
+        title={`Progress for ${SCOPE_LABEL[scope]} — tap to change`}
+        aria-label={`Progress ${pct}% for ${SCOPE_LABEL[scope]}, tap to change range`}
+      >
+        <span className={styles.ringWrap}>
+          <svg className={styles.ring} viewBox="0 0 56 56">
+            <circle cx="28" cy="28" r="22" className={styles.ringTrack}/>
+            <circle cx="28" cy="28" r="22" className={styles.ringFill}
+              style={{ strokeDashoffset: `${138.2 - (138.2 * pct / 100)}` }}/>
+          </svg>
+          <span className={styles.ringInner}>
+            <span className={styles.ringPct}>
+              {scopeTotal > 0 ? pct : '—'}
+              {scopeTotal > 0 && <span className={styles.ringPctSign}>%</span>}
+            </span>
+          </span>
+        </span>
+        <span className={styles.ringLabel}>
+          {SCOPE_LABEL[scope]} {scopeDone}/{scopeTotal}
+        </span>
+      </button>
 
       {/* Stats */}
       <div className={styles.stats}>

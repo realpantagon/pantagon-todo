@@ -38,7 +38,11 @@ Push subscription happens via `subscribePush`/`enableNotifications` in notificat
 
 ### Components
 
-Each component under `src/components/` pairs a `.jsx` file with a CSS Module of the same name (e.g. `TodoItem.jsx` + `TodoItem.module.css`). `App.jsx` toggles between the task list view and `CalendarView` via `viewMode` state rather than a router; `AddTodoSheet` and `SettingsView` are rendered as overlay sheets conditionally mounted based on boolean state.
+Each component under `src/components/` pairs a `.jsx` file with a CSS Module of the same name (e.g. `TodoItem.jsx` + `TodoItem.module.css`). `App.jsx` switches between three views — the task list, `CalendarView`, and `AnalyticsView` — via `viewMode` state rather than a router (the calendar is toggled from `StatsBar`, analytics from the chart button in `Header`); `AddTodoSheet` and `SettingsView` are rendered as overlay sheets conditionally mounted based on boolean state.
+
+### Analytics
+
+`AnalyticsView` renders only; every number comes from pure functions in [src/lib/analytics.js](src/lib/analytics.js) (`buildAnalytics` for the stats, `buildTimeline` for the month-grid gantt). There is no `start_date` column — `created_at` is treated as the start and `completed_at` as the end, so every duration is lead time (waiting + working), and open tasks are measured up to today. All bucketing there uses **local** dates via `localDay()`, not `toISOString()`: with ICT (+7) the latter throws anything completed after 17:00 UTC into the wrong day, which visibly shifts the heatmap, streaks and "busiest day". Charts are plain CSS/flexbox — no charting library.
 
 ### PWA build
 

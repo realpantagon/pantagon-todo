@@ -10,6 +10,7 @@ import Toast from './components/Toast'
 import SettingsView from './components/SettingsView'
 import { DEFAULT_SETTINGS, playCompletionSound } from './lib/settings'
 import CalendarView from './components/CalendarView'
+import AnalyticsView from './components/AnalyticsView'
 import './App.css'
 
 export default function App() {
@@ -39,9 +40,12 @@ export default function App() {
   
   const todosRef = useRef([])
 
-  const showToast = useCallback((msg, type = 'success') => {
-    setToast({ msg, type })
-    setTimeout(() => setToast(null), 2800)
+  const toastTimer = useRef(null)
+
+  const showToast = useCallback((msg, type = 'success', action = null) => {
+    setToast({ msg, type, action })
+    clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast(null), action ? 5000 : 2800)
   }, [])
 
   const load = useCallback(async () => {
@@ -61,19 +65,29 @@ export default function App() {
   useEffect(() => { todosRef.current = todos }, [todos])
 
 
+  // Puts a task back to pending — used by the Undo action on the "Done!" toast,
+  // so a mis-tapped checkbox is always one tap away from being reversed.
+  const undoToggle = useCallback(async (id) => {
+    clearTimeout(toastTimer.current)
+    setToast(null)
+    setTodos(prev => prev.map(t => t.id === id
+      ? { ...t, completed: false, completed_at: null } : t))
+    try { await toggleTodo(id, false) } catch { load() }
+  }, [load])
+
   const handleToggle = useCallback(async (id, completed) => {
     setTodos(prev => prev.map(t => t.id === id
       ? { ...t, completed, completed_at: completed ? new Date().toISOString() : null } : t))
     try {
       await toggleTodo(id, completed)
       if (completed) {
-        showToast('Done!')
+        showToast('Done!', 'success', { label: 'Undo', run: () => undoToggle(id) })
         if (settings.soundEnabled) {
           playCompletionSound()
         }
       }
     } catch { load() }
-  }, [load, showToast, settings.soundEnabled])
+  }, [load, showToast, undoToggle, settings.soundEnabled])
 
   const handleDelete = useCallback(async (id) => {
     setTodos(prev => prev.filter(t => t.id !== id))
@@ -110,13 +124,17 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header onOpenSettings={() => setShowSettings(true)} />
+      <Header
+        onOpenSettings={() => setShowSettings(true)}
+        onToggleAnalytics={() => setViewMode(prev => prev === 'analytics' ? 'tasks' : 'analytics')}
+        analyticsActive={viewMode === 'analytics'}
+      />
       <StatsBar 
         todos={todos} 
         todayCount={todayCount} 
         overdueCount={overdueCount} 
         activeView={viewMode}
-        onViewToggle={() => setViewMode(prev => prev === 'tasks' ? 'calendar' : 'tasks')}
+        onViewToggle={() => setViewMode(prev => prev === 'calendar' ? 'tasks' : 'calendar')}
       />
 
       {viewMode === 'tasks' ? (
@@ -135,6 +153,8 @@ export default function App() {
             onEdit={t => { setEditTodo(t); setShowAdd(true) }}
           />
         </>
+      ) : viewMode === 'analytics' ? (
+        <AnalyticsView todos={todos} loading={loading} />
       ) : (
         <CalendarView
           todos={todos}
@@ -150,9 +170,10 @@ export default function App() {
       )}
 
       <button className="fab" onClick={() => { setEditTodo(null); setShowAdd(true) }} aria-label="Add task">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
           <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
+        <span className="fabLabel">New Task</span>
       </button>
 
       {showAdd && (
@@ -176,7 +197,7 @@ export default function App() {
         />
       )}
 
-      {toast && <Toast msg={toast.msg} type={toast.type} />}
+      {toast && <Toast msg={toast.msg} type={toast.type} action={toast.action} />}
     </div>
   )
 }

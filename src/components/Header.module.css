@@ -56,6 +56,18 @@
   color: var(--accent2);
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gearBtnOn {
+  background: var(--accent-dim);
+  border-color: rgba(123, 108, 246, 0.35);
+  color: var(--accent2);
+}
+
 .gearBtn {
   width: 34px;
   height: 34px;

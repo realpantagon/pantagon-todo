@@ -2,30 +2,34 @@
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  padding-bottom: 40px;
+  /* Clearance for the floating action bar so the last task is always reachable */
+  padding-bottom: calc(96px + env(safe-area-inset-bottom));
 }
 
 .fab {
   position: fixed;
-  bottom: 28px;
-  right: 22px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(436px, calc(100vw - 44px));
+  height: 54px;
+  border-radius: 27px;
   background: var(--accent);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 8px var(--accent-dim), 0 8px 32px var(--accent-glow);
+  gap: 9px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: 0 0 0 6px var(--accent-dim), 0 10px 34px var(--accent-glow);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   z-index: 40;
 }
 .fab:active {
-  transform: scale(0.9);
-  box-shadow: 0 0 0 4px var(--accent-dim);
+  transform: translateX(-50%) scale(0.97);
+  box-shadow: 0 0 0 3px var(--accent-dim), 0 6px 20px var(--accent-glow);
 }
 
-@media (min-width: 480px) {
-  .fab { right: calc(50% - 218px); bottom: 28px; }
-}
+.fabLabel { line-height: 1; }
