@@ -139,7 +139,7 @@ export default function SettingsView({ onSettingsChange, showToast, triggerTestN
           </div>
 
           <div className={styles.footer}>
-            <p className={styles.footerText}>Pantagon Tasks v1.1.0 · local client</p>
+            <p className={styles.footerText}>Todos v1.1.0 · local client</p>
           </div>
         </div>
       </div>

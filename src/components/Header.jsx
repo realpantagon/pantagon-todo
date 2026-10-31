@@ -42,7 +42,7 @@ export default function Header({ onOpenSettings, onToggleAnalytics, analyticsAct
           </button>
         </div>
       </div>
-      <h1 className={styles.title}>Pantagon Tasks</h1>
+      <h1 className={styles.title}>Todos</h1>
     </header>
   )
 }

@@ -12,8 +12,8 @@ export default defineConfig({
       injectManifest: undefined,
       strategies: 'generateSW',
       manifest: {
-        name: 'Pantagon Tasks',
-        short_name: 'Pantagon',
+        name: 'Todos',
+        short_name: 'Todos',
         description: 'Personal task manager',
         theme_color: '#0f0f0f',
         background_color: '#0f0f0f',

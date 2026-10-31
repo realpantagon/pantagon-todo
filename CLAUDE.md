@@ -13,7 +13,7 @@ There is no test suite/runner configured in this project.
 
 ## Architecture
 
-This is **Pantagon Tasks** ("my-todo") — a single-user React 19 + Vite PWA todo app backed by Supabase. No routing library; `src/App.jsx` holds all top-level state and conditionally renders views/sheets.
+This is **Todos** ("my-todo") — a single-user React 19 + Vite PWA todo app backed by Supabase. No routing library; `src/App.jsx` holds all top-level state and conditionally renders views/sheets.
 
 ### Backend: Supabase (not fully in this repo)
 
