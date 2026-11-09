@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import styles from './AddTodoSheet.module.css'
 
 const PRIORITIES = [
@@ -16,8 +16,21 @@ export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClo
   const [dueTime,    setDueTime]    = useState(todo?.due_time    || '')
   const [saving,     setSaving]     = useState(false)
   const titleRef = useRef(null)
+  const noteRef = useRef(null)
+  const sheetRef = useRef(null)
 
   useEffect(() => { setTimeout(() => titleRef.current?.focus(), 350) }, [])
+
+  // Grow the note with its content. Collapsing to 'auto' to measure briefly
+  // shortens the sheet, which would clamp its scroll position — so restore it.
+  useLayoutEffect(() => {
+    const el = noteRef.current
+    const sheet = sheetRef.current
+    const scrollTop = sheet.scrollTop
+    el.style.height = 'auto'
+    el.style.height = `${el.scrollHeight + el.offsetHeight - el.clientHeight}px`
+    sheet.scrollTop = scrollTop
+  }, [note])
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -45,7 +58,7 @@ export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClo
 
   return (
     <div className={styles.overlay} onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className={styles.sheet}>
+      <div className={styles.sheet} ref={sheetRef}>
         <div className={styles.handle} />
         <div className={styles.header}>
           <h2 className={styles.sheetTitle}>{todo ? 'Edit Task' : 'New Task'}</h2>
@@ -66,6 +79,7 @@ export default function AddTodoSheet({ todo, categories, onSave, onDelete, onClo
             required maxLength={200}
           />
           <textarea
+            ref={noteRef}
             className={styles.noteInput}
             placeholder="Note (optional)"
             value={note}
